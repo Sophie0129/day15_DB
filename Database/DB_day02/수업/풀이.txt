@@ -1,0 +1,44 @@
+CREATE TABLE member(
+    m_id      VARCHAR2(20)   , 
+    m_pwd     VARCHAR2(20) , 
+    m_name    VARCHAR2(20) , 
+    m_addr    VARCHAR2(20)  , 
+     PRIMARY KEY (m_id)
+);
+
+CREATE TABLE goods( g_num INT  PRIMARY KEY, 
+    g_id VARCHAR2(20), g_name VARCHAR2(20) , 
+    g_price INT , g_count INT , g_price_sum INT , g_date DATE );
+CREATE SEQUENCE g_seq;
+ALTER TABLE goods ADD CONSTRAINT g_id_m_id FOREIGN KEY (g_id)
+        REFERENCES member (m_id) ON DELETE CASCADE;
+
+
+insert into member values('aaa','aaa','홍길동','산골짜기');
+insert into member values('bbb','bbb','김개똥','개똥별');
+insert into member values('ccc','ccc','고길동','마포구');
+insert into member values('ddd','ddd','김말이','분식집');
+
+
+
+insert into goods(g_num, g_id, g_name, g_price, g_count, g_price_sum, g_date)
+values(g_seq.nextval,'aaa','운동화',75000,2,150000,sysdate);
+
+insert into goods(g_num, g_id, g_name, g_price, g_count, g_price_sum, g_date)
+values(g_seq.nextval,'aaa','티셔츠',15000,5,75000,sysdate);
+
+insert into goods(g_num, g_id, g_name, g_price, g_count, g_price_sum, g_date)
+values(g_seq.nextval,'bbb','가방',450000,1,450000,sysdate);
+
+insert into goods(g_num, g_id, g_name, g_price, g_count, g_price_sum, g_date)
+values(g_seq.nextval,'bbb','책',35000,2,70000,sysdate);
+
+
+select M.*, G.* from member M inner join goods G ON M.m_id = G.g_id;
+select M.m_id,M.m_name,G.g_name,G.g_price_sum from member M inner join goods G ON M.m_id = G.g_id;
+select M.m_id,M.m_name,M.m_addr, sum(G.g_price_sum) from member M inner join goods G ON M.m_id = G.g_id GROUP BY M.m_id, M.m_name, M.m_addr;
+
+
+
+
+

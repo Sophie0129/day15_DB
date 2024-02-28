@@ -1,0 +1,29 @@
+-- 1번 풀이
+create table employee(
+name varchar2(15),
+salary number,
+job varchar2(20),
+join_company date
+);
+insert into employee values('홍길동',2000000,'컴퓨터','2222/12/24');
+select * from employee;
+alter session set nls_date_format = 'YYYY/MM/DD';
+select * from employee;
+
+-- 2번 풀이
+select * from employee where salary*12 > 100000000;
+
+select name, join_company from employee where join_company < '2015/01/01';
+
+select * from employee where salary >= 2800000 and salary <=3000000;
+select * from employee where salary between 2800000 and 3000000;
+
+
+-- 3번 풀이
+select * from employee where salary*12 >=60000000 and join_company >= '2015/01/01';
+
+select * from employee where (job = '삼성' or job ='엘지') and salary*12 >= 50000000;
+
+
+-- 4번 풀이
+select * from employee where name like '%김%' and salary*12 >=30000000 order by job asc, salary desc ;

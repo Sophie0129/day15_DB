@@ -1,0 +1,117 @@
+round : 괄호의 두번째 값의 수만큼 소수점을 자르고, 잘린 나머지 값은 반올림
+select round(컬럼명, 2) from 테이블명 where 컬럼명 = 1;
+select round(컬럼명/2, 2)from 테이블명 where 컬럼명 = 1;
+
+trunc : 괄호의 두번째 값의 수만큼 소수점을 자르고, 잘린 나머지 값은 버림
+select trunc(컬럼명,2) from 테이블명 where 컬럼명 = 1;
+
+mod : 나눈 후 나머지 값만 출력
+select mod(컬럼명,2) from 테이블명 where 컬럼명 = 2;
+
+--함수는 where절 다음에 사용할 수 있다
+ex)
+select*from 테이블명 where mod(컬럼명,2) != 0; -- or =1
+select 컬럼명1, round(컬럼명2/2, 2) from 테이블명 where mod(컬럼명1,2) = 0;
+
+select upper(컬럼명) from 테이블명 where 컬럼명 = 11;  > upper 문자를 대문자로 바꿈
+select lower(컬럼명) from 테이블명 where 컬럼명 = 11;  > lower 문자를 소문자로 바꿈
+select initcap(컬럼명) from 테이블명 where 컬럼명 = 11;
+> initcap 여백과 언더바 기준 첫글자만 대문자로 바꿈
+
+select sum(컬럼명) from 테이블명;  > sum 총 합을 연산해줌
+select avg(컬럼명) from 테이블명;  > avg 평균을 연산해줌
+select max(컬럼명), min(score) from 테이블명;  > max 최대값, min 최솟값을 알려줌
+select count(*) from 테이블명;  > count 행의 갯수를 알려줌
+
+group by = 데이터를 그룹화 한다
+select 컬럼명1, sum(컬럼명2) from 테이블명 group by 컬럼명1;
+> 앞뒤로 같은 컬럼명을 넣어준다
+select 컬럼명1, sum(컬럼명2) from 테이블명 group by 컬럼명1 having sum(score)>60;
+> 그룹은 where절을 못쓴다. 대신 having이 그 기능을 대신한다.
+
+GROUP BY 절은 특정 칼럼을 기준으로 집계 함수를 사용하여 
+건수(COUNT), 합계(SUM), 평균(AVG) 등 집 계성 데이터를 추출할 때 사용한다. 
+GROUP BY 절에서 기준 칼럼을 여러 개 지정할 수 있으며, HAVING 절을 함께 사용하면 
+집계 함수를 사용하여 WHERE 절의 조건절처럼 조건을 부여할 수 있다. 
+GROUP BY 절은 중복제거를 할 때도 사용 가능하다.
+
+테이블명에 별칭 붙히기
+select 별칭1.*, 별칭2.컬럼명1, 별칭2.컬럼명2 from 테이블명1 별칭1, 테이블명2 별칭2;
+> 앞에서 별칭으로 요청할 컬럼명을 미리 써 놓고 코드의 뒤에서 각 테이블에 따르는 별칭을 부여한다
+	테이블1에는 별칭1을, 테이블2에는 별칭2를.
+
+select * from 테이블명1 where 컬럼명1=(select 컬럼명2 from 테이블명2 where 컬럼명3='aaa');
+> 쿼리문에서 또 다른 쿼리문을 쓸 수 있다.
+
+내부 조인 = Inner join
+두 테이블의 공통된(겹치는) 부분을 연결한다. 가장 일반적이고 그냥 조인이라고 하면 = 내부조인 이다.
+코드의 inner join을 그냥 join이라고만 써도 알아서 inner join으로 인식한다.
+조인의 형태는 외부 조인=outer join, 크로스 조인, 셀프 조인 등이 있다.
+내부 조인은 2개의 테이블이 전부 각자의 값을 가지고 있어야 가능하고,
+외부 조인은 한개의 테이블만 값이 있어도 가능하다.
+
+형식은 아래와 같다
+select 열어볼 컬럼목록(별칭.컬럼명 형식으로 출력할 모든 컬럼명을 적어넣음)
+from 기준테이블 별칭
+Inner join 조인테이블 별칭
+on 조인할컬럼 = 조인할컬럼 (별칭.컬럼명 형식으로 각각 기준테이블컬럼 = 조인테이블컬럼)
+where 검색조건
+
+
+https://aquerytool.com  > 테이블 5개까지 무료로 쓸수있는 온라인사이트
+
+
+ai  > 자동으로 실행될때마다 +1을 하며 숫자입력
+외래키로 연결해 A가 부모키가 되면, A의 정보가 있을때만 B를 사용할 수 있게 한다. 
+
+-숫자 자동 카운트. 
+--Auto Increment를 위한 Sequence 추가 > 자동으로 숫자1씩 올리며 할당해줌
+CREATE SEQUENCE 시퀀스명
+START WITH 1
+INCREMENT BY 1;
+
+-테이블 연동 시키기
+ALTER TABLE 테이블명1
+    ADD CONSTRAINT 조건명 FOREIGN KEY (테이블명1의 컬럼)
+        REFERENCES 테이블명2 (테이블명2의 컬럼) ;
+        
+        ALTER TABLE 테이블명 > 이테이블명에-
+        CONSTRAINT > 제약조건을 건다. 뒤에오는건 그 조건의 이름.
+        REFERENCES > 연결해주겠다. 뒤에 있는 테이블의 컬럼과.
+
+foreign key = 외래키
+
+이후 각 테이블에 값을 넣을 때..(첫번째 괄호는 컬럼명들 나열, 두번째 괄호는 넣을 값의 나열)
+
+insert into 테이블2(m_id,m_pwd, m_name, m_addr) values('aaa','aaa','홍길동','산골짜기');
+insert into 테이블1(b_num, b_id, b_title, b_content, b_date) values(abc.nextval, 'bbb', '제목', '내용', sysdate);
+
+테이블2의 m_id가 테이블1 b_id의 부모 키 이므로, 부모키가 가진 값과 같은 값을 넣어주어야 한다.
+
+삭제할 때에도 비슷하게, 하위 값인 테이블1의 b_id가 삭제되어야만 
+부모 키인 테이블2의 m_id를 삭제할 수 있다. 
+
+.nextval = 자동으로 실행될때마다 +1을 하며 숫자입력
+하지만 오류가 나도 실행된것이여서 몇번의 오류 이후 실제 입력이 될 때,
+오류난 횟수+1의 값으로 입력될 수 있다.
+
+그럴땐 (select mac(b_num) from board)+1 을 해주면 똑같은 기능에 오류난 횟수는 세지 않는다.
+
+시퀀스와 조건을 삭제시킬땐 drop을 쓴다.
+drop sequence 시퀀스명;
+alter table 테이블명1 drop constraint 조건명;
+
+연결이 끊기면 개별적으로 삭제 가능.
+
+부모를 삭제하면 하위 모든 내용을 전부 삭제하도록 연동도 가능.
+
+
+
+
+
+
+
+
+
+
+
