@@ -51,12 +51,11 @@ class DB_con{
 				arr.add(dto);
 			}
 			/*
-				System.out.println(rs.getString("id"));
-				System.out.println(rs.getString("pwd"));
-				System.out.println(rs.getString("name"));
-				System.out.println(rs.getInt("age"));
-				System.out.println("----------------------"); //DAO에서는 직접 출력하지는 않는다
-
+			System.out.println(rs.getString("id"));
+			System.out.println(rs.getString("pwd"));
+			System.out.println(rs.getString("name"));
+			System.out.println(rs.getInt("age"));
+			System.out.println("----------------------"); //DAO에서는 직접 출력하지는 않는다
 
 			System.out.println(rs.next());
 			System.out.println(rs.getString("id"));
@@ -110,7 +109,7 @@ class DB_con{
 	}
 	public int insert(MememberDTO dto) {
 		String sql = 
-				//"insert into member_test values('"+dto)"
+				//"insert into member_test values('"+dto...)"
 				"insert into member_test(id, pwd, name, age) values(?,?,?,?)";  //물음표도 순차적으로
 		int result = 0;
 		try {
@@ -134,7 +133,7 @@ class DB_con{
 		int result=0;
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setString(1, delId); //괄호 첫자리는 물음표에 들어갈 값
+			ps.setString(1, delId); //괄호 첫자리는 물음표의 위치(물음표가 여러개일수도 있으니까), 두번째값이 물음표에 넣을 값
 			result = ps.executeUpdate();//값이 있으면 1, 없으면 0 \
 			//DB에서 있는값을 지우면 1행이 삭제되었다고 하고, 없는값을 지우면 0행이 삭제되었다고 함 그값이 돌아오는것
 		} catch (Exception e) {
@@ -206,6 +205,7 @@ public class MainClass {
 				d.setName( sc.next());
 				System.out.println("가입할 age 입력");
 				d.setAge(sc.nextInt());
+				
 				int res = db.insert(d);
 				if (res == 1) {
 					System.out.println("회원가입 성공");
